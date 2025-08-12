@@ -1,0 +1,16 @@
+# Core
+numpy
+scipy
+pandas
+matplotlib
+
+# ML
+torch
+torchvision
+torchaudio
+
+# Optional (PCA/ANN)
+scikit-learn
+
+# Logging
+tqdm
