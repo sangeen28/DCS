@@ -1,9 +1,13 @@
-# DCS (Dynamic Client Selector) — Federated Learning Prototype
+# Federated Learning Client Selection using Double Deep Q-Learning (DDQL)
 
-This repository contains a cleaned-up, modular implementation of the DCS system:
-client selection via Double-DQN, trust/latency-aware scoring, incremental PCA
-compression, and anomaly filtering. It keeps the prior filenames and extends them
-inside a `src/dcs/` package, plus reproducible experiment scripts.
+This project implements an optimized client selection mechanism for Federated Learning using reinforcement learning. It is based on Double Deep Q-Learning (DDQL) and includes components for trust score evaluation, historical performance tracking, latency management, and anomaly detection using Approximate Nearest Neighbor (ANN) search.
+
+## Features:
+- **Reinforcement Learning** for client selection.
+- **Incremental PCA** for dimensionality reduction in model updates.
+- **Anomaly detection** using Approximate Nearest Neighbor (ANN) search.
+- **Comparison with other federated learning methods** like FedAvg, FAVOR, and FLASH-RL.
+- **Non-IID Data Partitioning**: Supports Dirichlet-based and shard-based partitioning strategies.
 
 ## Install
 ```bash
