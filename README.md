@@ -26,4 +26,4 @@ CIFAR-10:
 python -m experiments.cifar10_experiment --rounds 5 --clients 10 --select 5
 ```
 
-> Tip: Start with small numbers to validate wiring, then scale up.
+
