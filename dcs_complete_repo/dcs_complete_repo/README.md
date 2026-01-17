@@ -1,4 +1,4 @@
-# DCS-Complete (Research Demo Repo)
+# DCS
 
 This repo contains a **complete, runnable** reference implementation of a DCS-style federated learning simulator:
 
@@ -9,8 +9,6 @@ This repo contains a **complete, runnable** reference implementation of a DCS-st
 - **Latency prediction** via EMA
 - **Stable projection + kNN anomaly filtering**
   - Uses **IncrementalPCA** *when feasible*; otherwise falls back to a fixed random projection
-  - Output dimension is **always fixed**, preventing the shape-mismatch crash you encountered
-- **All plots are bar charts** (per-round metrics + hyperparameter sensitivity sweeps)
 
 > This is intentionally a **demo-friendly** simulator: it models device heterogeneity, dropouts, and a malicious label-flip attack, while keeping runtime reasonable.
 
@@ -99,7 +97,7 @@ All hyperparameters live in `configs/default.yaml`.
 
 ---
 
-## Hyperparameter sensitivity bars (not copied)
+## Hyperparameter sensitivity bars 
 
 `scripts/run_sensitivity.py` runs short experiments across grids and produces bar charts like:
 - α (Dirichlet non-IID)
@@ -120,8 +118,4 @@ These bars come from **measured runs** with the same simulator.
 
 ---
 
-## Notes on correctness / limitations
 
-This is a faithful *systems-style* simulation of a DCS pipeline (trust/latency-aware selection + anomaly filtering + RL policy over selection actions). It is not a reproduction of any single paper’s exact numeric table.
-
-If you need the sensitivity **ranges** to match a specific paper, change the sweep grids inside `scripts/run_sensitivity.py`.
