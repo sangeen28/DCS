@@ -139,8 +139,4 @@ These bars come from **measured runs** with the same simulator.
 
 ---
 
-## Notes on correctness / limitations
 
-This is a faithful *systems-style* simulation of a DCS pipeline (trust/latency-aware selection + anomaly filtering + RL policy over selection actions). It is not a reproduction of any single paper’s exact numeric table.
-
-If you need the sensitivity **ranges** to match a specific paper, change the sweep grids inside `scripts/run_sensitivity.py`.
