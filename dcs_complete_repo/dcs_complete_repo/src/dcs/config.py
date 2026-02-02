@@ -1,3 +1,5 @@
+'''
+
 from __future__ import annotations
 
 from dataclasses import dataclass, asdict
@@ -146,3 +148,158 @@ def to_dict(cfg: Config) -> Dict[str, Any]:
     d["LAM_GRID"] = list(cfg.LAM_GRID)
     d["FLIP_PAIR"] = list(cfg.FLIP_PAIR)
     return d
+
+    '''
+
+%%writefile src/dcs/config.py
+from __future__ import annotations
+
+from dataclasses import dataclass, fields
+from typing import Any, Dict, Optional, Tuple
+
+import os
+
+try:
+    import yaml
+except Exception as e:
+    raise ImportError(
+        "PyYAML is required to load configs. Install it with: pip install pyyaml"
+    ) from e
+
+
+@dataclass
+class Config:
+    # -------------------------
+    # Data / FL setup
+    # -------------------------
+    DATASET: str = "mnist"
+    NUM_CLIENTS: int = 50
+    NUM_EDGES: int = 5
+    ROUNDS: int = 20
+    LOCAL_EPOCHS: int = 1
+    BATCH_SIZE: int = 64
+    LR: float = 0.05
+    MOMENTUM: float = 0.9
+    DIRICHLET_ALPHA: float = 0.8
+    MIN_SAMPLES_PER_CLIENT: int = 20
+
+    # -------------------------
+    # Selection / action space
+    # -------------------------
+    K_MIN: int = 5
+    K_MAX: int = 15
+    K_STEP: int = 2
+    LAM_GRID: Tuple[float, ...] = (0.3, 0.5, 0.7)
+    LAM_DEFAULT: float = 0.5
+
+    # -------------------------
+    # Trust / latency
+    # -------------------------
+    TRUST_ALPHA: float = 0.6
+    LAT_EMA: float = 0.7
+
+    # -------------------------
+    # Attack simulation
+    # -------------------------
+    MALICIOUS_RATIO_SELECTED: float = 0.0
+    FLIP_PAIR: Tuple[int, int] = (0, 1)
+
+    # -------------------------
+    # Filtering
+    # -------------------------
+    PCA_RANK: int = 20
+    ANN_NEIGHBORS: int = 6
+    CONTAMINATION: float = 0.1
+    MAX_REF: int = 2000
+
+    # -------------------------
+    # RL (DDQL)
+    # -------------------------
+    DDQL_HIDDEN: int = 128
+    DDQL_LR: float = 0.001
+    DDQL_GAMMA: float = 0.95
+    DDQL_TAU: float = 0.01
+    DDQL_EPS_START: float = 1.0
+    DDQL_EPS_END: float = 0.05
+    DDQL_EPS_DECAY: float = 0.995
+    DDQL_BUFFER: int = 20000
+    DDQL_BATCH: int = 128
+
+    # -------------------------
+    # Reward weights
+    # -------------------------
+    W_PERF: float = 1.0
+    W_COMP: float = 0.1
+    W_COMM: float = 0.05
+    W_ANOM: float = 0.5
+    W_LAT: float = 0.1
+    W_ENERGY: float = 0.02
+    W_FAIR: float = 0.2
+
+    # -------------------------
+    # Dataset truncation (optional)
+    # -------------------------
+    MAX_TRAIN_SAMPLES: Optional[int] = None
+    MAX_TEST_SAMPLES: Optional[int] = None
+
+    # -------------------------
+    # Quality proxy
+    # -------------------------
+    MAX_QUALITY_BATCHES: int = 2
+
+    # -------------------------
+    # Helpers used by runner.py
+    # -------------------------
+    def projection_dim(self) -> int:
+        # Used by runner for PCA projection + comm proxy
+        return int(self.PCA_RANK)
+
+    def flip_pair_tuple(self) -> Tuple[int, int]:
+        a, b = self.FLIP_PAIR
+        return int(a), int(b)
+
+    def __post_init__(self) -> None:
+        # Normalize types that may come from YAML as list
+        if isinstance(self.LAM_GRID, list):
+            self.LAM_GRID = tuple(float(x) for x in self.LAM_GRID)
+        else:
+            self.LAM_GRID = tuple(float(x) for x in self.LAM_GRID)
+
+        if isinstance(self.FLIP_PAIR, list):
+            if len(self.FLIP_PAIR) != 2:
+                raise ValueError("FLIP_PAIR must have exactly two elements.")
+            self.FLIP_PAIR = (int(self.FLIP_PAIR[0]), int(self.FLIP_PAIR[1]))
+        else:
+            self.FLIP_PAIR = (int(self.FLIP_PAIR[0]), int(self.FLIP_PAIR[1]))
+
+        # Normalize optionals (YAML can give 'null' -> None already, but keep safe)
+        if self.MAX_TRAIN_SAMPLES is not None:
+            self.MAX_TRAIN_SAMPLES = int(self.MAX_TRAIN_SAMPLES)
+        if self.MAX_TEST_SAMPLES is not None:
+            self.MAX_TEST_SAMPLES = int(self.MAX_TEST_SAMPLES)
+
+    @classmethod
+    def from_dict(cls, d: Dict[str, Any]) -> "Config":
+        # Keep only keys that exist on the dataclass
+        valid = {f.name for f in fields(cls)}
+        kwargs = {k: v for k, v in d.items() if k in valid}
+        return cls(**kwargs)
+
+
+def load_config(path: str) -> Config:
+    """
+    Load YAML config and return Config.
+    Supports relative paths.
+    """
+    path = os.path.expanduser(path)
+    if not os.path.isabs(path):
+        path = os.path.join(os.getcwd(), path)
+
+    with open(path, "r", encoding="utf-8") as f:
+        raw = yaml.safe_load(f) or {}
+
+    if not isinstance(raw, dict):
+        raise ValueError("Config file must parse into a YAML mapping/dict.")
+
+    return Config.from_dict(raw)
+
