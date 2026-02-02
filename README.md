@@ -16,6 +16,9 @@ This repo contains a **complete, runnable** reference implementation of a DCS-st
 
 ## Quick start (local)
 
+We recommend running in a fresh virtual environment with Python 3.x to improve compatibility across package versions and reproducibility.
+
+
 ```bash
 pip install -r requirements.txt
 
