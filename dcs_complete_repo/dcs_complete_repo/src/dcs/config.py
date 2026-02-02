@@ -151,7 +151,7 @@ def to_dict(cfg: Config) -> Dict[str, Any]:
 
     '''
 
-%%writefile src/dcs/config.py
+#writefile src/dcs/config.py
 from __future__ import annotations
 
 from dataclasses import dataclass, fields
