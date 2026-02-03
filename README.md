@@ -17,6 +17,7 @@ This repo contains a **complete, runnable** reference implementation of a DCS-st
 ## Quick start (local)
 
 We recommend running in a fresh virtual environment with Python 3.x to improve compatibility across package versions and reproducibility.
+The repo uses a src/ layout (e.g., src/dcs/), so you must add src to PYTHONPATH. Such as: !PYTHONPATH=$PWD python -u scripts/run_demo.py --config configs/default.yaml
 
 
 ```bash
