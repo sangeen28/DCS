@@ -1,0 +1,81 @@
+# ==========================
+# Core experiment config
+# ==========================
+DATASET: mnist            # mnist | fashion_mnist | cifar10
+
+NUM_CLIENTS: 50
+NUM_EDGES: 5
+ROUNDS: 20
+LOCAL_EPOCHS: 1
+BATCH_SIZE: 64
+LR: 0.05
+MOMENTUM: 0.9
+
+# ==========================
+# Non-IID partition (Dirichlet)
+# ==========================
+DIRICHLET_ALPHA: 0.8
+MIN_SAMPLES_PER_CLIENT: 20
+
+# ==========================
+# Selection action space (DDQL chooses (K, lambda))
+# ==========================
+K_MIN: 5
+K_MAX: 15
+K_STEP: 2
+LAM_GRID: [0.3, 0.5, 0.7]
+LAM_DEFAULT: 0.5
+
+# ==========================
+# Trust / latency model
+# ==========================
+TRUST_ALPHA: 0.6
+LAT_EMA: 0.7
+
+# ==========================
+# Malicious simulation
+# ==========================
+MALICIOUS_RATIO_SELECTED: 0.0
+FLIP_PAIR: [0, 1]
+
+# ==========================
+# Stable projection + ANN anomaly filter
+# NOTE: projection_dim will be derived as min(PCA_RANK, K_MIN) for stability.
+# ==========================
+PCA_RANK: 20
+ANN_NEIGHBORS: 6
+CONTAMINATION: 0.10
+MAX_REF: 2000
+
+# ==========================
+# DDQL hyperparameters
+# ==========================
+DDQL_HIDDEN: 128
+DDQL_LR: 0.001
+DDQL_GAMMA: 0.95
+DDQL_TAU: 0.01
+DDQL_EPS_START: 1.0
+DDQL_EPS_END: 0.05
+DDQL_EPS_DECAY: 0.995
+DDQL_BUFFER: 20000
+DDQL_BATCH: 128
+
+# ==========================
+# Reward weights
+# ==========================
+W_PERF: 1.0
+W_COMP: 0.10
+W_COMM: 0.05
+W_ANOM: 0.50
+W_LAT: 0.10
+W_ENERGY: 0.02
+W_FAIR: 0.20
+
+# ==========================
+# Fast mode knobs (optional)
+# ==========================
+MAX_TRAIN_SAMPLES: null
+MAX_TEST_SAMPLES: null
+
+# Local quality proxy batches (smaller => faster, noisier)
+MAX_QUALITY_BATCHES: 2
