@@ -26,13 +26,20 @@ def main() -> None:
     for k, v in cfg.__dict__.items():
         print(f"{k:>24}: {v}")
 
+    df_agentic = run_experiment(cfg, mode="AgenticDCS", seed=args.seed)
     df_dcs = run_experiment(cfg, mode="DCS", seed=args.seed)
     df_fed = run_experiment(cfg, mode="FedAvg", seed=args.seed)
     df_score = run_experiment(cfg, mode="ScoreOnly", seed=args.seed)
 
+    df_agentic.to_csv(out_dir / "results_agentic_dcs.csv", index=False)
     df_dcs.to_csv(out_dir / "results_dcs.csv", index=False)
     df_fed.to_csv(out_dir / "results_fedavg.csv", index=False)
     df_score.to_csv(out_dir / "results_scoreonly.csv", index=False)
+
+    summary_agentic_vs_dcs = bar_summary_comparison(
+        df_agentic, df_dcs, name_a="AgenticDCS", name_b="DCS", out_dir=str(out_dir)
+    )
+    summary_agentic_vs_dcs.to_csv(out_dir / "summary_agentic_vs_dcs.csv", index=False)
 
     # Per-round bar charts
     bar_compare_by_round(df_dcs, df_fed, "test_acc", "DCS", "FedAvg", step=1,
@@ -56,6 +63,8 @@ def main() -> None:
     summary_df.to_csv(out_dir / "summary_dcs_vs_fedavg.csv", index=False)
 
     # Quick table print
+    print("\n=== SUMMARY (AgenticDCS vs DCS) ===")
+    print(summary_agentic_vs_dcs)
     print("\n=== SUMMARY (DCS vs FedAvg) ===")
     print(summary_df)
 
