@@ -9,6 +9,8 @@ This repo contains a **complete, runnable** reference implementation of a DCS-st
 - **Latency prediction** via EMA
 - **Stable projection + kNN anomaly filtering**
   - Uses **IncrementalPCA** *when feasible*; otherwise falls back to a fixed random projection
+- **AgenticDCS mode**
+  - Adds mission-aware planning, risk gating, and fairness-aware fallback selection on top of DDQL actions
 
 > This is intentionally a **demo-friendly** simulator: it models device heterogeneity, dropouts, and a malicious label-flip attack, while keeping runtime reasonable.
 
@@ -121,5 +123,4 @@ These bars come from **measured runs** with the same simulator.
 - `configs/default.yaml` – editable config
 
 ---
-
 
