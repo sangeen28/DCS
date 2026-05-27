@@ -124,3 +124,13 @@ These bars come from **measured runs** with the same simulator.
 
 ---
 
+#Cite
+
+@inproceedings{khan2026dynamic,
+  title={Dynamic Client Selector: A Double Deep Q-Learning Framework for Efficient Federated Learning},
+  author={Khan, Sangeen and Karim, Md Monjurul and Muzammal, Muhammad and Qu, Qiang},
+  booktitle={2026 IEEE International Conference on Pervasive Computing and Communications (PerCom)},
+  pages={1--10},
+  year={2026},
+  organization={IEEE}
+}
