@@ -128,5 +128,6 @@ These bars come from **measured runs** with the same simulator.
 
 If you use this work, please cite it as:
 
-S. Khan, M. M. Karim, M. Muzammal, and Q. Qu, "Dynamic Client Selector: A Double Deep Q-Learning Framework for Efficient Federated Learning," *2026 IEEE International Conference on Pervasive Computing and Communications (PerCom)*, 2026, pp. 1-10.
+S. Khan, M. M. Karim, M. Muzammal, and Q. Qu, "Dynamic Client Selector: A Double Deep Q-Learning Framework for Efficient Federated Learning," *2026 IEEE International Conference on Pervasive Computing and Communications (PerCom)*, 2026, pp. 1-10. DOI: [10.1109/PerCom67906.2026.11524502](https://doi.org/10.1109/PerCom67906.2026.11524502)
+
 
